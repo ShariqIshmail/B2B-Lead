@@ -17,10 +17,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes (TBD)
-// app.use('/api/leads', require('./routes/leads'));
-// app.use('/api/companies', require('./routes/companies'));
-// app.use('/api/segments', require('./routes/segments'));
+// Routes
+app.use('/api/leads', require('./routes/leads'));
+app.use('/api/companies', require('./routes/companies'));
+app.use('/api/segments', require('./routes/segments'));
+app.use('/api/imports', require('./routes/imports'));
 
 // Basic route
 app.get('/', (req, res) => {

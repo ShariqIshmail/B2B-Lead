@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import UploadPage from './pages/UploadPage';
+import Dashboard from './pages/Dashboard';
+import CompaniesPage from './pages/CompaniesPage';
+import SegmentsPage from './pages/SegmentsPage';
 
 function App() {
   const [status, setStatus] = useState('Loading...');
+  const [currentPage, setCurrentPage] = useState('dashboard');
 
   useEffect(() => {
     // Check if backend is running
@@ -12,32 +17,64 @@ function App() {
       .catch(err => setStatus('Backend Not Running'));
   }, []);
 
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'upload':
+        return <UploadPage />;
+      case 'companies':
+        return <CompaniesPage />;
+      case 'segments':
+        return <SegmentsPage />;
+      case 'dashboard':
+      default:
+        return <Dashboard />;
+    }
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>📊 Lead Management & Email CRM</h1>
         <p>Import, Clean, Score, and Segment Leads</p>
+        <div className="status-badge">
+          <span>{status}</span>
+        </div>
       </header>
 
-      <main className="App-main">
-        <div className="status-box">
-          <p>Status: {status}</p>
-        </div>
+      <nav className="App-nav">
+        <button
+          className={currentPage === 'dashboard' ? 'active' : ''}
+          onClick={() => setCurrentPage('dashboard')}
+        >
+          📈 Dashboard
+        </button>
+        <button
+          className={currentPage === 'upload' ? 'active' : ''}
+          onClick={() => setCurrentPage('upload')}
+        >
+          📤 Upload
+        </button>
+        <button
+          className={currentPage === 'companies' ? 'active' : ''}
+          onClick={() => setCurrentPage('companies')}
+        >
+          🏢 Companies
+        </button>
+        <button
+          className={currentPage === 'segments' ? 'active' : ''}
+          onClick={() => setCurrentPage('segments')}
+        >
+          📧 Segments
+        </button>
+      </nav>
 
-        <section className="features">
-          <h2>Features (Coming Soon)</h2>
-          <ul>
-            <li>✅ Lead Import with Monthly Prompts</li>
-            <li>✅ Automatic Data Cleaning</li>
-            <li>✅ Company Aggregation & Grouping</li>
-            <li>✅ Lead Scoring (Frequency + Business Potential)</li>
-            <li>✅ Industry Classification (Web Lookup)</li>
-            <li>✅ Geographic Segmentation (US/Canada)</li>
-            <li>✅ Email List Management</li>
-            <li>✅ Export for Sales Reps</li>
-          </ul>
-        </section>
+      <main className="App-main">
+        {renderPage()}
       </main>
+
+      <footer className="App-footer">
+        <p>Lead CRM v0.1.0 • Powered by Node.js + React + PostgreSQL</p>
+      </footer>
     </div>
   );
 }
